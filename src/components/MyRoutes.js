@@ -1,16 +1,48 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import SignIn from '../pages/SignIn'
 import SignUp from '../pages/SignUp'
-import Home from '../pages/Home'
-import ProtectedRoute from './ProtectedRoute'
+import SignIn from './../pages/SignIn'
+import Home from './../pages/Home'
+import DefineRoute from './DefineRoute'
 
 function MyRoutes() {
     return (
         <Routes>
-            <Route path="/" element={<SignUp />} />
-            <Route path="signin" element={<SignIn />} />
-            <ProtectedRoute path="home" element={<Home />} />
+            <Route
+                exact
+                path="/signin"
+                element={
+                    <DefineRoute isRouteAuthenticated={false}>
+                        <SignIn />
+                    </DefineRoute>
+                }
+            />
+            <Route
+                exact
+                path="/signup"
+                element={
+                    <DefineRoute isRouteAuthenticated={false}>
+                        <SignUp />
+                    </DefineRoute>
+                }
+            />
+            <Route
+                exact
+                path="/home"
+                element={
+                    <DefineRoute>
+                        <Home />
+                    </DefineRoute>
+                }
+            />
+            <Route
+                path="*"
+                element={
+                    <DefineRoute isRouteAuthenticated={false}>
+                        <SignIn />
+                    </DefineRoute>
+                }
+            />
         </Routes>
     )
 }

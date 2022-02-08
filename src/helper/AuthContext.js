@@ -1,37 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const AuthContext = React.createContext()
 
-class AuthProvider extends React.Component {
-    state = { isAuth: false }
+function AuthProvider({ children }) {
+    let auth = JSON.parse(localStorage.getItem('auth'))
+    let loggedInUser = localStorage.getItem('loggedInUser')
 
-    constructor() {
-        super()
-        this.login = this.login.bind(this)
-        this.logout = this.logout.bind(this)
+    const [isAuth, setIsAuth] = useState(!auth ? false : auth)
+    const [user, setUser] = useState(!loggedInUser ? undefined : loggedInUser)
+
+    const login = (loggedInUser) => {
+        localStorage.setItem('auth', true)
+        setIsAuth(true)
+        localStorage.setItem('loggedInUser', loggedInUser.uuid)
+        setUser(loggedInUser.uuid)
     }
 
-    login() {
-        setTimeout(() => this.setState({ isAuth: true }), 1000)
+    const logout = () => {
+        localStorage.setItem('auth', false)
+        setIsAuth(false)
+        localStorage.setItem('loggedInUser', undefined)
+        setUser(undefined)
     }
 
-    logout() {
-        this.setState({ isAuth: false })
-    }
-
-    render() {
-        return (
-            <AuthContext.Provider
-                value={{
-                    isAuth: this.state.isAuth,
-                    login: this.login,
-                    logout: this.logout,
-                }}
-            >
-                {this.props.children}
-            </AuthContext.Provider>
-        )
-    }
+    return (
+        <AuthContext.Provider
+            value={{
+                isAuth: isAuth,
+                user: user,
+                login: login,
+                logout: logout,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    )
 }
 
 const AuthConsumer = AuthContext.Consumer
