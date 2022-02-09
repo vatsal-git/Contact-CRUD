@@ -18,7 +18,6 @@ section {
     width: 100%;
 }
 
-/* HELPER */
 .center-my-child {
     display: flex;
     align-items: center;
@@ -34,53 +33,16 @@ a:hover {
 
 form,
 .contact-list-wrapper {
-    padding: 3em;
+    padding: 1.5em 3em;
     box-shadow: var(--shadow);
     border: 1px solid var(--gray);
     border-radius: 5px;
-}
-
-header {
-    color: var(--blue);
-    /* margin-bottom: 1em; */
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-input {
-    box-shadow: var(--shadow);
-    border: 1px solid var(--gray);
-    border-radius: 5px;
-    padding: 0.5em 1em;
-}
-.email:focus,
-.password:focus {
-    transform: translateY(0.2em);
 }
 
 .error {
     font-size: 0.7em;
     color: var(--red);
     height: 1rem;
-}
-
-.btn {
-    padding: 0.5em 1em;
-    margin-bottom: 1em;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--blue);
-    border-radius: 5px;
-    background-color: var(--blue);
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
-.btn:hover {
-    background-color: var(--dark-blue);
-}
-.btn:active {
-    transform: translateY(0.2em);
 }
 
 .or-link {
@@ -142,4 +104,9 @@ input {
     width: 25%;
     text-align: left;
     padding: 0.5em;
+}
+
+.profile-pic {
+    height: 100px;
+    width: 100px;
 }

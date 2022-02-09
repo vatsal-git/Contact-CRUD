@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Form, Alert, Button } from 'react-bootstrap'
+import { getUUID } from './../helper/HelperFunctions'
 
 function SignUp() {
     let navigate = useNavigate()
     const error = document.getElementsByClassName('error')
     const [form, setForm] = useState({
+        userId: '',
         email: '',
         password: '',
     })
     const [doValid, setDoValid] = useState(false)
 
-    useEffect(() => {}, [form])
+    useEffect(() => {
+        setForm({ ...form, userId: getUUID() })
+    }, [])
 
     const onFormSubmit = (event) => {
-        form.uuid = create_UUID()
-
         setDoValid(true)
         event.preventDefault()
         const users = JSON.parse(localStorage.getItem('users'))
@@ -43,7 +46,8 @@ function SignUp() {
             : '*Invalid Email'
 
         error[3].textContent =
-            form.password === document.signupForm.confirmPassword.value
+            form.password ===
+            document.getElementById('formBasicConfirmPassword').value
                 ? ''
                 : '*Enter same password'
 
@@ -60,93 +64,64 @@ function SignUp() {
         return count === 0
     }
 
-    const create_UUID = () => {
-        var dt = new Date().getTime()
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-            /[xy]/g,
-            function (c) {
-                var r = (dt + Math.random() * 16) % 16 | 0
-                dt = Math.floor(dt / 16)
-                return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16)
-            }
-        )
-        return uuid
-    }
-
     // HELPERS END
 
     return (
         <section id="signup" className="center-my-child">
-            <form name="signupForm" onSubmit={(event) => onFormSubmit(event)}>
-                <header>SignUp</header>
+            <Form onSubmit={(event) => onFormSubmit(event)}>
+                <Alert.Heading>Sign-Up</Alert.Heading>
                 <p className="error"></p>
-                <div className="input-field-wrapper">
-                    <div className="input-field">
-                        <label htmlFor="email">Email</label>
-                        <br />
-                        <input
-                            type="text"
-                            name="email"
-                            className="email"
-                            required
-                            onChange={(e) => {
-                                setForm({
-                                    ...form,
-                                    email: e.target.value,
-                                })
-                                if (doValid) validate()
-                            }}
-                        />
-                        <p className="error"></p>
-                    </div>
-                    <div className="input-field">
-                        <label htmlFor="password">Password</label>
-                        <br />
-                        <input
-                            type="password"
-                            name="password"
-                            className="password"
-                            required
-                            onChange={(e) =>
-                                setForm({
-                                    ...form,
-                                    password: e.target.value,
-                                })
-                            }
-                        />
-                        <p className="error"></p>
-                    </div>
-                    <div className="input-field">
-                        <label htmlFor="confirmPassword">
-                            Confirm Password
-                        </label>
-                        <br />
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            className="password"
-                            required
-                            onChange={(e) => {
-                                setForm({
-                                    ...form,
-                                    confirmPassword: e.target.value,
-                                })
-                                if (doValid) validate()
-                            }}
-                        />
-                        <p className="error"></p>
-                    </div>
-                </div>
-                <div className="btn-wrapper">
-                    <button type="submit" id="signup-btn" className="btn">
-                        GO
-                    </button>
-                </div>
-                <p className="or-link">
-                    or <br />
-                    <Link to="/">SignIn</Link>
-                </p>
-            </form>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control
+                        onChange={(e) => {
+                            setForm({
+                                ...form,
+                                email: e.target.value,
+                            })
+                            if (doValid) validate()
+                        }}
+                        type="email"
+                        placeholder="Enter email"
+                    />
+                    <p className="error"></p>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        placeholder="Password"
+                        onChange={(e) =>
+                            setForm({
+                                ...form,
+                                password: e.target.value,
+                            })
+                        }
+                    />
+                    <p className="error"></p>
+                </Form.Group>
+
+                <Form.Group
+                    className="mb-3"
+                    controlId="formBasicConfirmPassword"
+                >
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" />
+                    <p className="error"></p>
+                </Form.Group>
+
+                <Form.Group className="mb-3 d-grid" controlId="formBasicButton">
+                    <Button variant="primary" type="submit">
+                        Submit
+                    </Button>
+                </Form.Group>
+                <Form.Text className="or-link">
+                    Or
+                    <br />
+                    <Link to="/signin">Sign-In</Link>
+                </Form.Text>
+            </Form>
         </section>
     )
 }

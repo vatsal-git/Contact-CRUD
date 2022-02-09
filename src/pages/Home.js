@@ -1,80 +1,59 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { AuthConsumer } from '../helper/AuthContext'
 import MyModal from '../components/MyModal'
+import { Alert, Button, Table } from 'react-bootstrap'
+import TableRow from '../components/TableRow'
 
 function Home() {
-    const [userContact, setUserContact] = useState(undefined)
-
-    const getUserContact = (userId) => {
-        const users = JSON.parse(localStorage.getItem('users'))
-        users.forEach((user) => {
-            console.log(user.uuid, userId)
-            if (user.uuid === userId) {
-                // localStorage.setItem(user.contact)
-                setUserContact({
-                    profile: user.contact.profile,
-                    name: user.contact.name,
-                    email: user.contact.email,
-                    phone: user.contact.number,
-                })
-            }
-        })
-    }
+    const userContacts = JSON.parse(localStorage.getItem('userContacts'))
 
     return (
         <section id="home">
             <AuthConsumer>
-                {({ user, logout }) => (
+                {({ activeUserId, logout }) => (
                     <>
                         <div className="logout-btn-wrapper">
-                            <button
-                                id="logout-btn"
-                                className="btn"
-                                onClick={logout}
-                            >
+                            <Button variant="danger" onClick={logout}>
                                 Logout
-                            </button>
+                            </Button>
                         </div>
 
                         <main className="contact-list-wrapper">
                             <MyModal
-                                uuid={user}
+                                activeUserId={activeUserId}
                                 title={'Add Contact'}
-                                type={'add'}
                             />
-                            <header>Contact List</header>
-                            <table id="contact-table">
+                            <Alert.Heading className="mb-3">
+                                Contact List
+                            </Alert.Heading>
+                            <Table>
                                 <thead>
-                                    <tr
-                                        className="table-row"
-                                        id="table-header-row"
-                                    >
-                                        <th className="table-row-item">
-                                            Profile
-                                        </th>
-                                        <th className="table-row-item">Name</th>
-                                        <th className="table-row-item">
-                                            Email
-                                        </th>
-                                        <th className="table-row-item">
-                                            Phone number
-                                        </th>
+                                    <tr>
+                                        <th>Profile</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone number</th>
                                     </tr>
                                 </thead>
-                                {/* <tbody>
-                        <tr className="table-row table-data-row">
-                            <td className="table-row-item">Img</td>
-                            <td className="table-row-item">Vatsal Patel</td>
-                            <td className="table-row-item">vatsal@email.com</td>
-                            <td className="table-row-item">1111111111</td>
-                        </tr>
-                    </tbody> */}
-                                {getUserContact(user)}
-                            </table>
+                                <tbody>
+                                    {/* <tr>
+                                        <td>hello</td>
+                                    </tr> */}
+                                    {userContacts.map((userContact, i) => {
+                                        if (userContact.userId === activeUserId)
+                                            return (
+                                                <TableRow
+                                                    userContact={userContact}
+                                                    key={i}
+                                                />
+                                            )
+                                    })}
+                                </tbody>
+                            </Table>
                         </main>
                     </>
                 )}
-            </AuthConsumer>
+            </AuthConsumer>{' '}
         </section>
     )
 }

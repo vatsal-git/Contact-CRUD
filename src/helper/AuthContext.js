@@ -3,31 +3,27 @@ import React, { useState } from 'react'
 const AuthContext = React.createContext()
 
 function AuthProvider({ children }) {
-    let auth = JSON.parse(localStorage.getItem('auth'))
-    let loggedInUser = localStorage.getItem('loggedInUser')
+    const activeUserId = localStorage.getItem('activeUserId')
 
-    const [isAuth, setIsAuth] = useState(!auth ? false : auth)
-    const [user, setUser] = useState(!loggedInUser ? undefined : loggedInUser)
+    const [isAuth, setIsAuth] = useState(
+        activeUserId === '' || activeUserId === null ? false : true
+    )
 
-    const login = (loggedInUser) => {
-        localStorage.setItem('auth', true)
+    const login = (loggedInUserId) => {
         setIsAuth(true)
-        localStorage.setItem('loggedInUser', loggedInUser.uuid)
-        setUser(loggedInUser.uuid)
+        localStorage.setItem('activeUserId', loggedInUserId)
     }
 
     const logout = () => {
-        localStorage.setItem('auth', false)
         setIsAuth(false)
-        localStorage.setItem('loggedInUser', undefined)
-        setUser(undefined)
+        localStorage.setItem('activeUserId', '')
     }
 
     return (
         <AuthContext.Provider
             value={{
                 isAuth: isAuth,
-                user: user,
+                activeUserId: activeUserId,
                 login: login,
                 logout: logout,
             }}

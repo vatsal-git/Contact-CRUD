@@ -6,6 +6,7 @@ function DefineRoute({ children, isRouteAuthenticated = true }) {
     return (
         <AuthConsumer>
             {({ isAuth }) => {
+                // console.log(children.type.name)
                 if (isAuth && isRouteAuthenticated) {
                     return children
                 } else if (isAuth && !isRouteAuthenticated) {

@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import { Form, Button, Alert } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthConsumer } from '../helper/AuthContext'
 
 function SignIn() {
     const navigate = useNavigate()
     const error = document.getElementsByClassName('error')
-    const [form, setForm] = useState({ email: '', password: '' })
+    const [form, setForm] = useState({ userId: '', email: '', password: '' })
     const [doValid, setDoValid] = useState(false)
 
     const onFormSubmit = (event, login) => {
@@ -17,7 +18,7 @@ function SignIn() {
             if (!users) {
                 error[0].textContent = '*New user, Please SignUp'
             } else if (isUserValid(users)) {
-                login(form)
+                login(form.userId)
                 navigate('/home')
             }
         }
@@ -45,7 +46,7 @@ function SignIn() {
                 if (user.password === form.password) {
                     count2++
                     error[2].textContent = ''
-                    form.uuid = user.uuid
+                    form.userId = user.userId
                 } else {
                     error[2].textContent = '*Wrong password'
                     error[0].textContent = ''
@@ -70,61 +71,58 @@ function SignIn() {
         <section id="signin" className="center-my-child">
             <AuthConsumer>
                 {({ login }) => (
-                    <form
-                        name="signupForm"
-                        onSubmit={(event) => onFormSubmit(event, login)}
-                    >
-                        <header>SignIn</header>
+                    <Form onSubmit={(event) => onFormSubmit(event, login)}>
+                        <Alert.Heading>Sign In</Alert.Heading>
                         <p className="error"></p>
-                        <div className="input-field-wrapper">
-                            <div className="input-field">
-                                <label htmlFor="email">Email</label>
-                                <br />
-                                <input
-                                    type="email"
-                                    name="email"
-                                    className="email"
-                                    onChange={(e) => {
-                                        setForm({
-                                            ...form,
-                                            email: e.target.value,
-                                        })
-                                        if (doValid) validate()
-                                    }}
-                                />
-                                <p className="error"></p>
-                            </div>
-                            <div className="input-field">
-                                <label htmlFor="password">Password</label>
-                                <br />
-                                <input
-                                    type="password"
-                                    name="password"
-                                    className="password"
-                                    onChange={(e) =>
-                                        setForm({
-                                            ...form,
-                                            password: e.target.value,
-                                        })
-                                    }
-                                />
-                                <p className="error"></p>
-                            </div>
-                        </div>
-                        <div className="btn-wrapper">
-                            <button
-                                type="submit"
-                                id="signin-btn"
-                                className="btn"
-                            >
-                                GO
-                            </button>
-                        </div>
-                        <p className="or-link">
-                            or <br />
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control
+                                onChange={(e) => {
+                                    setForm({
+                                        ...form,
+                                        email: e.target.value,
+                                    })
+                                    if (doValid) validate()
+                                }}
+                                type="email"
+                                placeholder="Enter email"
+                            />
+                            <p className="error"></p>
+                        </Form.Group>
+
+                        <Form.Group
+                            className="mb-3"
+                            controlId="formBasicPassword"
+                        >
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                placeholder="Password"
+                                onChange={(e) =>
+                                    setForm({
+                                        ...form,
+                                        password: e.target.value,
+                                    })
+                                }
+                            />
+                            <p className="error"></p>
+                        </Form.Group>
+
+                        <Form.Group
+                            className="mb-3 d-grid"
+                            controlId="formBasicButton"
+                        >
+                            <Button variant="primary" type="submit">
+                                Submit
+                            </Button>
+                        </Form.Group>
+
+                        <Form.Text className="or-link">
+                            Or
+                            <br />
                             <Link to="/signup">SignUp</Link>
-                        </p>
-                    </form>
+                        </Form.Text>
+                    </Form>
                 )}
             </AuthConsumer>
         </section>
