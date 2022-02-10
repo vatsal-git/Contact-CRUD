@@ -1,0 +1,63 @@
+/*
+            userContacts: [{userId:'', contactList: [{contactId: '', name: ''}, {contactId: '', name: ''}]}, {}, {}]  
+            */
+
+    // let isUserContactsEmpty = true,
+    //     isUserThere = false,
+    //     isContactListEmpty = true
+
+    // if (!userContacts) {
+    //     isUserContactsEmpty = true
+    // } else {
+    //     isUserContactsEmpty = false
+
+    //     userContacts.forEach((userContact) => {
+    //         if (userContact.contactList.length === 0) {
+    //             isContactListEmpty = true
+    //         } else {
+    //             isContactListEmpty = false
+    //         }
+    //     })
+    // }
+
+    // if (isUserContactsEmpty) {
+    //     localStorage.setItem(
+    //         'userContacts',
+    //         JSON.stringify([{ userId: activeUserId, contactList: [form] }])
+    //     )
+    // } else {
+    //     userContacts.forEach((userContact) => {
+    //         if (userContact.userId === activeUserId) {
+    //             isUserThere = true
+    //             if (isContactListEmpty) {
+    //                 localStorage.setItem(
+    //                     'userContacts',
+    //                     JSON.stringify([
+    //                         ...userContacts,
+    //                         { userId: activeUserId, contactList: [form] },
+    //                     ])
+    //                 )
+    //             } else {
+    //                 localStorage.setItem(
+    //                     'userContacts',
+    //                     JSON.stringify([
+    //                         ...userContacts,
+    //                         {
+    //                             userId: activeUserId,
+    //                             contactList: [
+    //                                 ...userContact.contactList,
+    //                                 form,
+    //                             ],
+    //                         },
+    //                     ])
+    //                 )
+    //             }
+    //         }
+    //     })
+    //     if (!isUserThere) {
+    //         localStorage.setItem('userContacts', [
+    //             ...userContacts,
+    //             { uuid: activeUserId, contactList: [form] },
+    //         ])
+    //     }
+    // }

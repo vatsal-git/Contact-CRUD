@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Form, Alert, Button } from 'react-bootstrap'
-import { getUUID } from './../helper/HelperFunctions'
+import {
+    getUUID,
+    validateEmail,
+    validatePassword,
+} from './../helper/HelperFunctions'
 
 function SignUp() {
     let navigate = useNavigate()
@@ -17,11 +21,14 @@ function SignUp() {
         setForm({ ...form, userId: getUUID() })
     }, [])
 
+    useEffect(() => {
+        if (doValid) validate()
+    }, [form])
+
     const onFormSubmit = (event) => {
         setDoValid(true)
         event.preventDefault()
         const users = JSON.parse(localStorage.getItem('users'))
-
         if (validate()) {
             if (!users) {
                 localStorage.setItem('users', JSON.stringify([form]))
@@ -35,23 +42,23 @@ function SignUp() {
         }
     }
 
-    // HELPERS
-
     const validate = () => {
-        error[1].textContent = form.email.match(
-            // eslint-disable-next-line no-useless-escape
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        )
-            ? ''
-            : '*Invalid Email'
+        error[0].textContent = ''
+        error[1].textContent = validateEmail(form.email)
 
-        error[3].textContent =
-            form.password ===
+        const errs = validatePassword(
+            form.password,
             document.getElementById('formBasicConfirmPassword').value
-                ? ''
-                : '*Enter same password'
+        )
 
-        return error[1].textContent === error[3].textContent
+        error[2].textContent = errs[0]
+        error[3].textContent = errs[1]
+
+        return (
+            error[1].textContent === '' &&
+            error[2].textContent === '' &&
+            error[3].textContent === ''
+        )
     }
 
     const isUserSignedUp = (users) => {
@@ -64,12 +71,10 @@ function SignUp() {
         return count === 0
     }
 
-    // HELPERS END
-
     return (
         <section id="signup" className="center-my-child">
             <Form onSubmit={(event) => onFormSubmit(event)}>
-                <Alert.Heading>Sign-Up</Alert.Heading>
+                <Alert.Heading>Sign Up</Alert.Heading>
                 <p className="error"></p>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>

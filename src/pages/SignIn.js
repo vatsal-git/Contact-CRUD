@@ -1,13 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form, Button, Alert } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthConsumer } from '../helper/AuthContext'
+import { validateEmail, validatePassword } from './../helper/HelperFunctions'
 
 function SignIn() {
     const navigate = useNavigate()
     const error = document.getElementsByClassName('error')
     const [form, setForm] = useState({ userId: '', email: '', password: '' })
     const [doValid, setDoValid] = useState(false)
+
+    useEffect(() => {
+        if (doValid) validate()
+    }, [form])
 
     const onFormSubmit = (event, login) => {
         event.preventDefault()
@@ -16,7 +21,7 @@ function SignIn() {
 
         if (validate()) {
             if (!users) {
-                error[0].textContent = '*New user, Please SignUp'
+                error[0].textContent = '*First user! Please SignUp'
             } else if (isUserValid(users)) {
                 login(form.userId)
                 navigate('/home')
@@ -24,17 +29,14 @@ function SignIn() {
         }
     }
 
-    // HELPER
-
     const validate = () => {
-        error[1].textContent = form.email.match(
-            // eslint-disable-next-line no-useless-escape
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-        )
-            ? ''
-            : '*Invalid Email'
+        error[0].textContent = ''
+        error[1].textContent = validateEmail(form.email)
 
-        return error[1].textContent === ''
+        const errs = validatePassword(form.password)
+        error[2].textContent = errs[0]
+
+        return error[1].textContent === '' && error[2].textContent === ''
     }
 
     const isUserValid = (users) => {
@@ -64,8 +66,6 @@ function SignIn() {
             return true
         }
     }
-
-    //HELPER END
 
     return (
         <section id="signin" className="center-my-child">
@@ -120,7 +120,7 @@ function SignIn() {
                         <Form.Text className="or-link">
                             Or
                             <br />
-                            <Link to="/signup">SignUp</Link>
+                            <Link to="/signup">Sign-Up</Link>
                         </Form.Text>
                     </Form>
                 )}

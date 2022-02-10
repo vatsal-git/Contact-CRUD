@@ -5,11 +5,7 @@
 }
 
 :root {
-    --blue: #1e90ff;
-    --dark-blue: #1568bb;
     --gray: #cfcfcf;
-    --red: #eb4d4d;
-    --dark-red: #a83a3a;
     --shadow: ;
 }
 
@@ -87,26 +83,33 @@ form,
     box-shadow: var(--shadow);
 }
 
-#contact-table {
-    width: 80%;
-    margin: 0 auto;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--gray);
-    border-radius: 5px;
-    padding: 0.5em 1em;
+.profile-preview-wrapper {
+    width: 100%;
+    height: 4em;
+    overflow: hidden;
 }
-#table-header-row {
-    border: 1px solid var(--gray);
-    border-radius: 5px;
-    padding: 0.5em 1em;
-}
-.table-row-item {
-    width: 25%;
-    text-align: left;
-    padding: 0.5em;
+.profile-preview {
+    max-width: 4rem;
+    max-height: 4rem;
 }
 
+.profile-pic-wrapper {
+    width: 3rem;
+    height: 3em;
+    border-radius: 50%;
+    overflow: hidden;
+}
 .profile-pic {
-    height: 100px;
-    width: 100px;
+    width: 100%;
+}
+
+table {
+    display: block;
+    overflow: scroll;
+}
+th,
+td {
+    width: max-content;
+    vertical-align: middle;
+    padding: 0 0.5em;
 }
